@@ -1,6 +1,6 @@
 import { db } from "@/firebase/firebaseconfig";
 import { doc, updateDoc } from "firebase/firestore";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 type JobCardType = {
   jobTitle: string;
