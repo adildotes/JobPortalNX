@@ -50,8 +50,8 @@ export default function JobSeekerInfo() {
     const uploadTask = uploadBytesResumable(storageRef, pic!);
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
-      (error) => {},
+      (snapshot) => { },
+      (error) => { },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log("File available at", downloadURL);
@@ -65,8 +65,8 @@ export default function JobSeekerInfo() {
     const uploadTask = uploadBytesResumable(storageRef, resume!);
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
-      (error) => {},
+      (snapshot) => { },
+      (error) => { },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log("File available at", downloadURL);
@@ -92,14 +92,17 @@ export default function JobSeekerInfo() {
   }, [picURL, resumeURL]);
 
   return (
-    <div className="flex flex-col justify-center items-center mt-20">
-      <h1>Job Seeker Information</h1>
-      <p>Please complete your profile.</p>
-      <div className="card bg-base-100 w-96 shadow-xl">
-        <label className="input input-bordered flex items-center gap-2">
+    <div className="flex flex-col justify-center items-center mt-20 space-y-6">
+      <h1 className="text-3xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text filter drop-shadow-lg mb-2">
+        Job Seeker Information
+      </h1>
+      <p className="text-gray-600 text-lg mb-4">Please complete your profile.</p>
+
+      <div className="card bg-gradient-to-br from-indigo-100 to-purple-200 w-96 shadow-2xl gap-4 p-6 rounded-lg transform transition-transform hover:scale-105">
+        <label className="input input-bordered flex items-center gap-2 mb-2">
           <input
             type="text"
-            className="grow"
+            className="grow text-base bg-white placeholder-gray-500 focus:ring-2 focus:ring-blue-300 transition-all"
             placeholder="Name"
             value={name}
             onChange={(e) => {
@@ -107,10 +110,11 @@ export default function JobSeekerInfo() {
             }}
           />
         </label>
-        <label className="input input-bordered flex items-center gap-2">
+
+        <label className="input input-bordered flex items-center gap-2 mb-2">
           <input
             type="text"
-            className="grow"
+            className="grow text-base bg-white placeholder-gray-500 focus:ring-2 focus:ring-blue-300 transition-all"
             placeholder="Description"
             value={description}
             onChange={(e) => {
@@ -119,10 +123,10 @@ export default function JobSeekerInfo() {
           />
         </label>
 
-        <label className="input input-bordered flex items-center gap-2">
+        <label className="input input-bordered flex items-center gap-2 mb-2">
           <input
             type="text"
-            className="grow"
+            className="grow text-base bg-white placeholder-gray-500 focus:ring-2 focus:ring-blue-300 transition-all"
             placeholder="Address"
             value={address}
             onChange={(e) => {
@@ -131,10 +135,10 @@ export default function JobSeekerInfo() {
           />
         </label>
 
-        <label className="input input-bordered flex items-center gap-2">
+        <label className="input input-bordered flex items-center gap-2 mb-2">
           <input
             type="text"
-            className="grow"
+            className="grow text-base bg-white placeholder-gray-500 focus:ring-2 focus:ring-blue-300 transition-all"
             placeholder="Phone"
             value={phone}
             onChange={(e) => {
@@ -142,11 +146,12 @@ export default function JobSeekerInfo() {
             }}
           />
         </label>
-        <label className="input input-bordered flex items-center gap-2">
-          Upload Picture:
+
+        <label className="input input-bordered flex items-center gap-2 mb-2">
+          <span className="font-medium text-gray-700">Upload Picture:</span>
           <input
             type="file"
-            className="file-input w-full "
+            className="file-input w-full bg-white placeholder-gray-500 focus:ring-2 focus:ring-blue-300 transition-all"
             onChange={(e) => {
               let files = e.target.files;
               if (files?.length) {
@@ -155,11 +160,12 @@ export default function JobSeekerInfo() {
             }}
           />
         </label>
-        <label className="input input-bordered flex items-center gap-2">
-          Upload Resume:
+
+        <label className="input input-bordered flex items-center gap-2 mb-2">
+          <span className="font-medium text-gray-700">Upload Resume:</span>
           <input
             type="file"
-            className="file-input w-full "
+            className="file-input w-full bg-white placeholder-gray-500 focus:ring-2 focus:ring-blue-300 transition-all"
             onChange={(e) => {
               let files = e.target.files;
               if (files?.length) {
@@ -168,10 +174,12 @@ export default function JobSeekerInfo() {
             }}
           />
         </label>
-        <button className="btn btn-primary" onClick={uploadFiles}>
+
+        <button className="btn btn-primary w-full mt-4 transform transition-transform hover:scale-105 shadow-lg shadow-blue-300/50" onClick={uploadFiles}>
           Save Job Seeker Details
         </button>
       </div>
     </div>
+
   );
 }
