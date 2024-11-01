@@ -1,31 +1,30 @@
 "use client";
 import { auth, db } from "@/firebase/firebaseconfig";
-import { UserType } from "@/types/ user-type"; // Fixed the space in the import path
-import { onAuthStateChanged } from "firebase/auth";
+import { UserType } from "@/types/ user-type"; // Corrected path
+import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
-type ChildrenType = {
+type AuthContextProps = {
     children: ReactNode;
 };
 
-type ContextType = {
+type AuthContextType = {
     user: UserType | null;
     setUser: (user: UserType | null) => void;
 };
 
-const AuthContext = createContext<ContextType | null>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
-export default function AuthContextProvider({ children }: ChildrenType) {
+export default function AuthContextProvider({ children }: AuthContextProps) {
     const [user, setUser] = useState<UserType | null>(null);
-    const route = useRouter();
+    const router = useRouter();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const uid = user.uid;
-                fetchUserData(uid);
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
+            if (firebaseUser) {
+                fetchUserData(firebaseUser.uid);
             } else {
                 setUser(null);
             }
@@ -35,16 +34,17 @@ export default function AuthContextProvider({ children }: ChildrenType) {
     }, []);
 
     const fetchUserData = async (uid: string): Promise<void> => {
-        const docRef = doc(db, "users", uid);
         try {
+            const docRef = doc(db, "users", uid);
             const userFound = await getDoc(docRef);
-            const userData = userFound.data();
 
-            if (!userData) return;
-
-            setUser(userData as UserType);
-        } catch (e) {
-            console.error("Error fetching user data:", e);
+            if (userFound.exists()) {
+                setUser(userFound.data() as UserType);
+            } else {
+                console.warn("User data not found.");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
         }
     };
 
@@ -55,4 +55,8 @@ export default function AuthContextProvider({ children }: ChildrenType) {
     );
 }
 
-export const useAuthContext = () => useContext(AuthContext);
+export const useAuthContext = (): AuthContextType => {
+    const context = useContext(AuthContext);
+    if (!context) throw new Error("useAuthContext must be used within an AuthContextProvider");
+    return context;
+};

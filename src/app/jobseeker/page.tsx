@@ -43,7 +43,7 @@ export default function JobSeekerHome() {
     });
 
     return unsub;
-    // return ()=>{unsub()}
+    // return ()=>{unsub()} 
   };
   return (
     <>
@@ -67,7 +67,7 @@ export default function JobSeekerHome() {
               salaryRange={salaryRange}
               qualification={qualification}
               skillSet={skillSet}
-            />
+            />  
           )
         )}
     </>
